@@ -9,7 +9,7 @@ var MangaFox = {
     },
     getMangaList: function(search, callback) {
         "use strict";
-        var urlManga = "http://mangafox.me/search.php?name=" + search +
+        var urlManga = "https://mangafox.me/search.php?name=" + search +
             "&advopts=1";
         $.ajax({
             url: urlManga,
@@ -85,7 +85,7 @@ var MangaFox = {
                                         1);
                             }
                             res[res.length] = [tit.trim(),
-                                "http:" + curChapURL
+                                "https:" + curChapURL
                             ];
                         }
                     });
