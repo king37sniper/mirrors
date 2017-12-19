@@ -85,7 +85,7 @@ var MangaFox = {
                                         1);
                             }
                             res[res.length] = [tit.trim(),
-                                "http:" + curChapURL
+                                curChapURL
                             ];
                         }
                     });
