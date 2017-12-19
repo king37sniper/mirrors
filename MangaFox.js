@@ -5,7 +5,7 @@ var MangaFox = {
     languages: "en",
     isMe: function(url) {
         "use strict";
-        return (url.indexOf("mangafox.la") !== -1);
+        return (url.indexOf("mangafox") !== -1);
     },
     getMangaList: function(search, callback) {
         "use strict";
