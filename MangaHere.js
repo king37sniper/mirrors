@@ -9,7 +9,7 @@ var MangaHere = {
     languages: "en",
     //Return true if the url corresponds to the mirror
     isMe: function (url) {
-        return (url.indexOf("mangahere.co/") != -1);
+        return (url.indexOf("mangahere.cc/") != -1);
     },
     //Return the list of all or part of all mangas from the mirror
     //The search parameter is filled if canListFullMangas is false
@@ -17,7 +17,7 @@ var MangaHere = {
     //This function must call callback("Mirror name", [returned list]);
     getMangaList: function (search, callback) {
         $.ajax({
-            url: "https://www.mangahere.co/search.php?name=" + search,
+            url: "https://www.mangahere.cc/search.php?name=" + search,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Cache-Control", "no-cache");
                 xhr.setRequestHeader("Pragma", "no-cache");
@@ -27,8 +27,7 @@ var MangaHere = {
                 div.innerHTML = objResponse;
                 var res = [];
                 $(".result_search dl dt a:first-child", div).each(function (index) {
-                    url = this.href.replace("chrome-extension", "https")
-                    res[res.length] = [$(this).text().trim(), url];
+                    res[res.length] = [$(this).text().trim(), this.href];
                 });
                 callback("Manga Here", res);
             }
@@ -51,7 +50,7 @@ var MangaHere = {
                 div.innerHTML = objResponse;
                 var res = [];
                 $(".detail_list ul li span.left a", div).each(function (index) {
-                    url = this.href.replace("chrome-extension", "https")
+                    url = this.href.replace("chrome-extension", "http")
                     res[res.length] = [$(this).text().trim(), url];
                 });
                 callback(res, obj);
@@ -74,9 +73,9 @@ var MangaHere = {
             name = name.substr(0, name.length - 5).trim();
         }
         currentChapter = $($(".readpage_top .title a", doc)[0]).text();
-        currentChapterURL = $(".readpage_top .title a", doc)[0].href.replace("chrome-extension", "https");
+        currentChapterURL = $(".readpage_top .title a", doc)[0].href;
         console.log(currentChapterURL);
-        currentMangaURL = $(".readpage_top .title a", doc)[1].href.replace("chrome-extension", "https");
+        currentMangaURL = $(".readpage_top .title a", doc)[1].href;
         callback({
             "name": name,
             "currentChapter": currentChapter,
@@ -91,7 +90,7 @@ var MangaHere = {
         //This function runs in the DOM of the current consulted page.
         var res = [];
         $("select.wid60:first option", doc).each(function (index) {
-            res[res.length] = "https:" + $(this).val();
+            res[res.length] = $(this).val();
         });
         return res;
     },
