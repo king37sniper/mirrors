@@ -92,32 +92,37 @@ var MangaFox = {
             }
         });
     },
-    getInformationsFromCurrentPage: function (doc, curUrl, callback) {
-        //This function runs in the DOM of the current consulted page.
-        var name;
-        var currentChapter;
-        var currentMangaURL;
-        var currentChapterURL;
-        name = $($(".readpage_top .title a", doc)[1]).text().trim();
-        if (name.length >= 5 && name.substr(name.length - 5, 5) == "Manga") {
-            name = name.substr(0, name.length - 5).trim();
+    getInformationsFromCurrentPage: function(doc, curUrl, callback) {
+        "use strict";
+        var str = $('#series > strong a', doc).text(); // dom lookups are expensive!
+        var name = $('#related > h3 a', doc).text() || str.substring(0,
+            str.length - 6); //falls through #related, into #series
+        var currentChapter = $("#series h1", doc).text();
+        var url = curUrl;
+        var posSl5 = 0;
+        var i;
+        for (i = 0; i < 5; i += 1) {
+            posSl5 = url.indexOf("/", posSl5 + 1);
         }
-        currentChapter = $($(".readpage_top .title a", doc)[0]).text();
-        currentChapterURL = $(".readpage_top .title a", doc)[0].href;
-        console.log(currentChapterURL);
-        currentMangaURL = $(".readpage_top .title a", doc)[1].href;
+        var curChapURL = url.substr(0, url.lastIndexOf("/") + 1);
+        if (curChapURL.substr(curChapURL.length - 2, 2) === "//") {
+            curChapURL = curChapURL.substr(0, curChapURL.length - 1);
+        }
         callback({
             "name": name,
-            "currentChapter": currentChapter,
-            "currentMangaURL": currentMangaURL,
-            "currentChapterURL": currentChapterURL
+            "currentChapter": currentChapter.trim(),
+            "currentMangaURL": url.substr(0, posSl5 + 1),
+            "currentChapterURL": curChapURL
         });
     },
-    getListImages: function (doc, curUrl) {
-        //This function runs in the DOM of the current consulted page.
+    getListImages: function(doc, curUrl) {
+        "use strict";
         var res = [];
-        $("select.wid60:first option", doc).each(function (index) {
-            res[res.length] = $(this).val();
+        $('#top_bar select.m option', doc).each(function() {
+            if (this.value > 0) {
+                res.push(curUrl.substr(0, curUrl.lastIndexOf(
+                    "/") + 1) + this.value + '.html');
+            }
         });
         return res;
     },
