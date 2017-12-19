@@ -14,8 +14,7 @@ var MangaFox = {
         $.ajax({
             url: urlManga,
             beforeSend: function(xhr) {
-                xhr.setRequestHeader("Cache-Control",
-                    "no-cache");
+                xhr.setRequestHeader("Cache-Control", "no-cache");
                 xhr.setRequestHeader("Pragma", "no-cache");
             },
             success: function(objResponse) {
@@ -116,14 +115,11 @@ var MangaFox = {
             "currentChapterURL": curChapURL
         });
     },
-    getListImages: function(doc, curUrl) {
-        "use strict";
+    getListImages: function (doc, curUrl) {
+        //This function runs in the DOM of the current consulted page.
         var res = [];
-        $('#top_bar select.m option', doc).each(function() {
-            if (this.value > 0) {
-                res.push(curUrl.substr(0, curUrl.lastIndexOf(
-                    "/") + 1) + this.value + '.html');
-            }
+        $("select.wid60:first option", doc).each(function (index) {
+            res[res.length] = $(this).val();
         });
         return res;
     },
