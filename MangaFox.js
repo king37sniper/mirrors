@@ -40,19 +40,19 @@ var MangaFox =
 				}
 			}
 		});
-    },
+	},
 	
-    getListChaps: function(urlManga, mangaName, obj, callback)
+	getListChaps: function(urlManga, mangaName, obj, callback)
 	{
-        "use strict";
-        $.ajax
+		"use strict";
+		$.ajax
 		({
-            url: urlManga + "?no_warning=1",
-            beforeSend: function(xhr)
+            		url: urlManga + "?no_warning=1",
+            		beforeSend: function(xhr)
 			{
-                xhr.setRequestHeader("Cache-Control", "no-cache");
-                xhr.setRequestHeader("Pragma", "no-cache");
-            },
+        		        xhr.setRequestHeader("Cache-Control", "no-cache");
+        	        	xhr.setRequestHeader("Pragma", "no-cache");
+			},
 			success: function(objResponse)
 			{
 				var div = document.createElement("div");
@@ -82,13 +82,13 @@ var MangaFox =
 				callback(res, obj);
 			}
 		});
-    },
+	},
 	
-    getInformationsFromCurrentPage: function(doc, curUrl, callback)
+	getInformationsFromCurrentPage: function(doc, curUrl, callback)
 	{
-        "use strict";
-        var name = $('#series > strong a', doc).text(); // dom lookups are expensive!
-        var currentChapter = $("#series h1", doc).text();
+        	"use strict";
+        	var name = $('#series > strong a', doc).text(); // dom lookups are expensive!
+        	var currentChapter = $("#series h1", doc).text();
 		currentChapterURL = $("#series h1 a", doc)[0].href;
 		console.log(currentChapterURL);
 		currentMangaURL = $('#series > strong a', doc)[0].href;
@@ -96,158 +96,161 @@ var MangaFox =
 		/*
 		//var name = $('#related > h3 a', doc).text() || str.substring(0, str.length - 6); //falls through #related, into #series
 		//var url = curUrl;
-        //var posSl5 = 0;
-        //
+        	//var posSl5 = 0;
+        	//
 		//var i;
 		//for (i = 0; i < 5; i += 1)
 		//{
-        //    posSl5 = url.indexOf("/", posSl5 + 1);
-        //}
-        //
+        	//    posSl5 = url.indexOf("/", posSl5 + 1);
+        	//}
+        	//
 		//var curChapURL = url.substr(0, url.lastIndexOf("/") + 1);
 		//if (curChapURL.substr(curChapURL.length - 2, 2) === "//")
 		//{
-        //    curChapURL = curChapURL.substr(0, curChapURL.length - 1);
-        //}
-        */
+        	//    curChapURL = curChapURL.substr(0, curChapURL.length - 1);
+        	//}
+        	*/
 		
 		callback
 		({
-            "name": name,
-            "currentChapter": currentChapter.trim(),
-            "currentMangaURL": url.substr(0, posSl5 + 1),
-            "currentChapterURL": curChapURL
-        });
-    },
-	
-    getListImages: function(doc, curUrl)
-	{
-        "use strict";
-        var res = [];
-        $('#top_bar select.m option', doc).each(function() 
-		{
-            if(this.value > 0)
-			{
-                res.push(curUrl.substr(0, curUrl.lastIndexOf("/") + 1) + this.value + '.html');
-            }
-        });
+			"name": name,
+            		"currentChapter": currentChapter.trim(),
+            		"currentMangaURL": currentMangaURL,
+            		"currentChapterURL": currentChapterURL
+			//"currentMangaURL": url.substr(0, posSl5 + 1),
+           		//"currentChapterURL": curChapURL
+		});
+	},
 		
-        return res;
-    },
+	getListImages: function(doc, curUrl)
+	{
+        	"use strict";
+        	var res = [];
+        	$('#top_bar select.m option', doc).each(function() 
+		{
+			if(this.value > 0)
+			{
+                		res.push(curUrl.substr(0, curUrl.lastIndexOf("/") + 1) + this.value + '.html');
+            		}
+        	});
+		
+        	return res;
+    	},
     
 	removeBanners: function(doc, curUrl)
 	{
 		"use strict";
-        $("#bottom_ads", doc).remove();
-        $('#MarketGid9463', doc).remove();
-        $('.ad', doc).remove();
-        $('#banner', doc).remove();
-    },
+        	$("#bottom_ads", doc).remove();
+        	$('#MarketGid9463', doc).remove();
+        	$('.ad', doc).remove();
+        	$('#banner', doc).remove();
+    	},
 	
-    whereDoIWriteScans: function(doc, curUrl)
+	whereDoIWriteScans: function(doc, curUrl)
 	{
-        "use strict";
-        return $("#viewer", doc);
-    },
+        	"use strict";
+        	return $("#viewer", doc);
+    	},
     
 	whereDoIWriteNavigation: function(doc, curUrl)
 	{
-        "use strict";
-        return $(".navAMR", doc);
-    },
+        	"use strict";
+        	return $(".navAMR", doc);
+   	},
     
 	isCurrentPageAChapterPage: function(doc, curUrl)
 	{
-        "use strict";
-        if($("#viewer", doc) !== null)
+        	"use strict";
+        	if($("#viewer", doc) !== null)
 		{
-            return($("#viewer", doc).size() !== 0);
-        }
+			return($("#viewer", doc).size() !== 0);
+        	}
 		
-        return false;
-    },
+        	return false;
+    	},
 	
-    doSomethingBeforeWritingScans: function(doc, curUrl)
+	doSomethingBeforeWritingScans: function(doc, curUrl)
 	{
-        "use strict";
-        $('#viewer', doc).css
+        	"use strict";
+        	$('#viewer', doc).css
 		({
-            'width': 'auto',
-            'margin': 'auto',
-            'background-color': 'black'
-        });
-        $("#image", doc).remove();
-        $("#tool", doc).next().remove();
-        $("#viewer", doc).after("<div class='navAMR'></div>").before("<div class='navAMR'></div>");
-        $(".widepage.page", doc).remove();
-        $('.fb_iframe_widget', doc).remove();
+			'width': 'auto',
+			'margin': 'auto',
+			'background-color': 'black'
+        	});
+        	$("#image", doc).remove();
+        	$("#tool", doc).next().remove();
+        	$("#viewer", doc).after("<div class='navAMR'></div>").before("<div class='navAMR'></div>");
+        	$(".widepage.page", doc).remove();
+        	$('.fb_iframe_widget', doc).remove();
         
 		if(typeof doc.createElement === 'function')
 		{
-            var script = doc.createElement('script');
-            script.innerText = "$(document).unbind('keydown');";
-            doc.body.appendChild(script);
-        }
-    },
+			var script = doc.createElement('script');
+            		script.innerText = "$(document).unbind('keydown');";
+            		doc.body.appendChild(script);
+        	}
+    	},
 	
-    nextChapterUrl: function(select, doc, curUrl)
+    	nextChapterUrl: function(select, doc, curUrl)
 	{
-        "use strict";
-        if($(select).children("option:selected").prev().size() !== 0)
+        	"use strict";
+        	if($(select).children("option:selected").prev().size() !== 0)
 		{
-            return $(select).children("option:selected").prev().val();
-        }
-        return null;
-    },
+			return $(select).children("option:selected").prev().val();
+        	}
+        	return null;
+    	},
 	
-    previousChapterUrl: function(select, doc, curUrl)
+	previousChapterUrl: function(select, doc, curUrl)
 	{
-        "use strict";
-        if($(select).children("option:selected").next().size() !== 0)
+        	"use strict";
+        	if($(select).children("option:selected").next().size() !== 0)
 		{
-            return $(select).children("option:selected").next().val();
-        }
-        return null;
-    },
+			return $(select).children("option:selected").next().val();
+        	}
+        	return null;
+    	},
 	
-    getImageFromPageAndWrite: function(urlImg, image, doc, curUrl)
+	getImageFromPageAndWrite: function(urlImg, image, doc, curUrl)
 	{
-        "use strict";
-        $.ajax
+        	"use strict";
+        	$.ajax
 		({
-            url: urlImg,
-            success: function(objResponse)
+			url: urlImg,
+            		success: function(objResponse)
 			{
-                var src = $('#image', objResponse).attr('src');
-                $(image).attr("src", src);
-            },
-            error: function()
+                		var src = $('#image', objResponse).attr('src');
+                		$(image).attr("src", src);
+            		},
+            		error: function()
 			{
-                $(image).attr("src", "");
-            }
-        });
-    },
+                		$(image).attr("src", "");
+            		}
+        	});
+    	},
 	
-    isImageInOneCol: function(img, doc, curUrl)
+    	isImageInOneCol: function(img, doc, curUrl)
 	{
-        "use strict";
-        return false;
-    },
+        	"use strict";
+        	return false;
+    	},
     
 	getMangaSelectFromPage: function(doc, curUrl)
 	{
-        "use strict";
-        return null;
-    },
-    doAfterMangaLoaded: function(doc, curUrl)
+        	"use strict";
+        	return null;
+    	},
+    	
+	doAfterMangaLoaded: function(doc, curUrl)
 	{
-        "use strict";
-        $("body > div:empty", doc).remove();
-    }
+        	"use strict";
+        	$("body > div:empty", doc).remove();
+    	}
 };
 
 // Call registerMangaObject to be known by includer
 if(typeof registerMangaObject == 'function') 
 {
-    registerMangaObject("Manga-Fox", MangaFox);
+	registerMangaObject("Manga-Fox", MangaFox);
 }
