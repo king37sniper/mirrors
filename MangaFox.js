@@ -87,40 +87,32 @@ var MangaFox =
 	getInformationsFromCurrentPage: function(doc, curUrl, callback)
 	{
         	"use strict";
-        	var name = $('#series > strong a', doc).text(); // dom lookups are expensive!
+        	var str = $('#series > strong a', doc).text(); // dom lookups are expensive!
+        	var name = $('#related > h3 a', doc).text() || str.substring(0, str.length - 6); //falls through #related, into #series
         	var currentChapter = $("#series h1", doc).text();
-		currentChapterURL = $("#series h1 a", doc)[0].href;
-		console.log(currentChapterURL);
-		currentMangaURL = $('#series > strong a', doc)[0].href;
-		
-		/*
-		//var name = $('#related > h3 a', doc).text() || str.substring(0, str.length - 6); //falls through #related, into #series
-		//var url = curUrl;
-        	//var posSl5 = 0;
-        	//
-		//var i;
-		//for (i = 0; i < 5; i += 1)
-		//{
-        	//    posSl5 = url.indexOf("/", posSl5 + 1);
-        	//}
-        	//
-		//var curChapURL = url.substr(0, url.lastIndexOf("/") + 1);
-		//if (curChapURL.substr(curChapURL.length - 2, 2) === "//")
-		//{
-        	//    curChapURL = curChapURL.substr(0, curChapURL.length - 1);
-        	//}
-        	*/
+        	var url = curUrl;
+        	var posSl5 = 0;
+        	var i;
+        	
+		for(i = 0; i < 5; i += 1)
+		{
+            		posSl5 = url.indexOf("/", posSl5 + 1);
+        	}
+        
+		var curChapURL = url.substr(0, url.lastIndexOf("/") + 1);
+        	if(curChapURL.substr(curChapURL.length - 2, 2) === "//")
+		{
+			curChapURL = curChapURL.substr(0, curChapURL.length - 1);
+        	}
 		
 		callback
 		({
 			"name": name,
-            		"currentChapter": currentChapter.trim(),
-            		"currentMangaURL": currentMangaURL,
-            		"currentChapterURL": currentChapterURL
-			//"currentMangaURL": url.substr(0, posSl5 + 1),
-           		//"currentChapterURL": curChapURL
-		});
-	},
+			"currentChapter": currentChapter.trim(),
+			"currentMangaURL": url.substr(0, posSl5 + 1),
+			"currentChapterURL": curChapURL
+        	});
+    	},
 		
 	getListImages: function(doc, curUrl)
 	{
