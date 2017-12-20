@@ -89,9 +89,9 @@ var MangaFox =
         "use strict";
         var name = $('#series > strong a', doc).text(); // dom lookups are expensive!
         var currentChapter = $("#series h1", doc).text();
-		currentChapterURL = $("#series h1 a")[0].href;
+		currentChapterURL = $("#series h1 a", doc)[0].href;
 		console.log(currentChapterURL);
-		currentMangaURL = $('#series > strong a')[0].href;
+		currentMangaURL = $('#series > strong a', doc)[0].href;
 		
 		/*
 		//var name = $('#related > h3 a', doc).text() || str.substring(0, str.length - 6); //falls through #related, into #series
