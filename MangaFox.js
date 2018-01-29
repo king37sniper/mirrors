@@ -14,7 +14,7 @@ var MangaFox =
 	getMangaList: function(search, callback)
 	{
 		"use strict";
-		var urlManga = "http://mangafox.la/search.php?name=" + search + "&advopts=1";
+		var urlManga = "http://fanfox.net/search.php?name=" + search + "&advopts=1";
 		$.ajax
 		({
 			url: urlManga,
